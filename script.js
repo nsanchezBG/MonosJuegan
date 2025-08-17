@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let availableQuestions = {}; 
     let nextQuestions = {};
     
-    // --- Configuración de la nueva versión ---
+    // CAMBIOS: Configuración actualizada
     const innerIcons = { 
         elespejonegro: 'IconoEspejoInner.png', 
         equipoaprueba: 'IconoEquipoInner.png', 
-        fuegoyseduccion: 'IconoFuegoInner.png' 
+        fuego: 'IconoFuegoInner.png' 
     };
 
     function showScreen(screenKey) {
@@ -26,14 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentScreen && currentScreen !== nextScreen) {
             currentScreen.classList.add('flipped');
-            // Retrasar la eliminación de 'active' para que la transición de opacidad funcione
+            // Retrasar la eliminación de 'active' para que la transición de opacidad ocurra durante el giro
             setTimeout(() => {
                 currentScreen.classList.remove('active');
             }, 300); 
         }
 
+        // Asegurarse de que la pantalla de destino esté lista para ser mostrada
         nextScreen.classList.add('active');
-        // Un pequeño retraso para que el navegador aplique 'active' antes de voltear
+        // Un pequeño retraso para asegurar que 'active' se aplique antes de iniciar la animación de giro
         setTimeout(() => {
             nextScreen.classList.remove('flipped');
         }, 10);
@@ -59,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const q = nextQuestions[cat]; 
         questionText.textContent = q; 
         questionIcon.src = innerIcons[cat]; 
-        screens.question.className = 'screen flipped ' + cat; // Asegurarse de que esté volteada antes de mostrarla
+        
+        // Asignar clase de color y asegurar que la tarjeta esté 'volteada' antes de la transición
+        screens.question.className = 'screen flipped ' + cat;
         
         showScreen('question'); 
     }
@@ -74,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Preguntas de pareja cargadas.");
         }).catch(error => console.error('Error al cargar las preguntas:', error));
         
-        // Al iniciar, todas las pantallas no activas deben estar 'volteadas'
         Object.values(screens).forEach(screen => {
             if (!screen.classList.contains('active')) {
                 screen.classList.add('flipped');
@@ -89,11 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
             displayQuestion(item.dataset.category);
         }));
         
+        // CAMBIO CLAVE: Lógica refinada para el botón de regreso
         backButton.addEventListener('click', () => { 
-            preselectQuestions(); 
-            // Reiniciar la clase de la pantalla de pregunta para la próxima vez
-            screens.question.className = 'screen flipped';
-            showScreen('category'); 
+            preselectQuestions();
+            showScreen('category'); // La función showScreen ahora maneja todo el volteo
         });
 
         if ('serviceWorker' in navigator) {
