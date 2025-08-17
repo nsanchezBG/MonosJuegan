@@ -57,7 +57,7 @@ html, body {
 #start-screen, #category-screen { background-color: #fff; }
 
 .logo { max-width: 50%; height: auto; margin-bottom: 2rem; }
-.start-text { font-size: 2rem; color: var(--color-text-dark); animation: blink 1.5s linear infinite; }
+.start-text { font-size: 2rem; color: var(--color-fuego); animation: blink 1.5s linear infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
 #category-screen h1 { font-size: 2.5rem; margin-bottom: 3rem; color: var(--color-text-dark); }
