@@ -1,11 +1,10 @@
 :root {
-    /* Nueva tipografía */
     --font-main: 'Shrikhand', cursive;
 
-    /* Nueva paleta de colores */
-    --color-espejo: #2c3e50; /* Un gris oscuro/azulado */
-    --color-equipo: #3498db; /* Un azul brillante */
-    --color-fuego: #e74c3c;  /* Un rojo pasional */
+    /* CAMBIO: Nueva paleta de colores */
+    --color-espejo: #2d2d29;
+    --color-equipo: #39d1a9;
+    --color-fuego: #e04c9d;
     
     --color-text-dark: #333;
     --color-text-light: #fff;
@@ -25,7 +24,6 @@ html, body {
     position: relative;
     width: 100%;
     height: 100%;
-    /* Añadido: Crea la perspectiva para el efecto 3D */
     perspective: 1500px;
 }
 
@@ -39,12 +37,9 @@ html, body {
     align-items: center;
     padding: 2rem;
     text-align: center;
-    
-    /* CAMBIO: Transición para el efecto de giro de tarjeta */
     transition: transform 0.6s, opacity 0.3s;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    
     opacity: 0;
     visibility: hidden;
 }
@@ -54,7 +49,6 @@ html, body {
     visibility: visible;
 }
 
-/* Añadido: Nueva clase para el estado 'volteado' de la tarjeta */
 .screen.flipped {
     transform: rotateY(-180deg);
 }
@@ -72,15 +66,15 @@ html, body {
 .category-item img { width: 100px; height: auto; }
 .category-item span { font-size: 1.5rem; }
 
-/* Colores de texto de las categorías */
+/* CAMBIOS: Colores de texto de las categorías actualizados */
 .category-item[data-category="elespejonegro"] span { color: var(--color-espejo); }
 .category-item[data-category="equipoaprueba"] span { color: var(--color-equipo); }
-.category-item[data-category="fuegoyseduccion"] span { color: var(--color-fuego); }
+.category-item[data-category="fuego"] span { color: var(--color-fuego); }
 
-/* Fondos de las pantallas de pregunta */
+/* CAMBIOS: Fondos de las pantallas de pregunta actualizados */
 #question-screen.elespejonegro { background-color: var(--color-espejo); }
 #question-screen.equipoaprueba { background-color: var(--color-equipo); }
-#question-screen.fuegoyseduccion { background-color: var(--color-fuego); }
+#question-screen.fuego { background-color: var(--color-fuego); }
     
 .question-content {
     height: 100%;
