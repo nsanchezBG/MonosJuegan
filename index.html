@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Nuestro Juego</title>
+    
+    <!-- Links para Favicon e Icono de Escritorio -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Nueva tipografía: Shrikhand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Pantalla de Inicio -->
+        <section id="start-screen" class="screen active">
+            <img src="LogoPareja.png" alt="Logo del Juego" class="logo">
+            <p class="start-text">Empezar</p>
+        </section>
+
+        <!-- Pantalla de Selección de Categoría -->
+        <section id="category-screen" class="screen">
+            <h1>Escoge una categoría</h1>
+            <div class="category-grid">
+                <div class="category-item" data-category="elespejonegro">
+                    <img src="IconoEspejo.png" alt="El Espejo Negro">
+                    <span>El Espejo Negro</span>
+                </div>
+                <div class="category-item" data-category="equipoaprueba">
+                    <img src="IconoEquipo.png" alt="Equipo a Prueba">
+                    <span>Equipo a Prueba</span>
+                </div>
+                <div class="category-item" data-category="fuegoyseduccion">
+                    <img src="IconoFuego.png" alt="Fuego & Seducción">
+                    <span>Fuego & Seducción</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pantalla de Pregunta -->
+        <section id="question-screen" class="screen">
+            <div class="question-content">
+                <img id="question-icon" src="" alt="Icono de Categoría">
+                <p id="question-text"></p>
+                <img id="back-button" src="IconoBack.png" alt="Regresar">
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
