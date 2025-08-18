@@ -1,67 +1,156 @@
 :root {
+    /* Tipografía */
     --font-main: 'Shrikhand', cursive;
+
+    /* Paleta de Colores - Juego de Pareja */
     --color-espejo: #2d2d29;
     --color-equipo: #39d1a9;
     --color-fuego: #e04c9d;
+    
+    /* Colores base de la UI */
     --color-text-dark: #333;
     --color-text-light: #fff;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body {
-    width: 100%; height: 100%;
-    font-family: var(--font-main);
-    overflow: hidden; background-color: #fff;
+
+/* --- RESeteo Global y Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-main);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* --- Estructura Principal y Animación de Tarjeta --- */
 #app-container {
-    position: relative; width: 100%; height: 100%;
+    position: relative;
+    width: 100%;
+    height: 100%;
     perspective: 1500px;
 }
+
 .screen {
-    position: absolute; width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    padding: 2rem; text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    
+    /* Transición para el efecto de giro de tarjeta */
     transition: transform 0.6s, opacity 0.3s;
     transform-style: preserve-3d;
-    backface-visibility: hidden;
-    opacity: 0; visibility: hidden;
+    backface-visibility: hidden; /* Oculta la cara trasera de la tarjeta mientras gira */
+    
+    opacity: 0;
+    visibility: hidden;
 }
-.screen.active { opacity: 1; visibility: visible; }
-.screen.flipped { transform: rotateY(-180deg); }
 
-/* --- Pantallas de Menú --- */
-#start-screen, #category-screen, #game-selection-screen { background-color: #fff; }
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+}
 
-.logo { max-width: 80%; height: auto; margin-bottom: 2rem; }
-.start-text { font-size: 2rem; color: var(--color-text-dark); animation: blink 1.5s linear infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+.screen.flipped {
+    transform: rotateY(-180deg);
+}
 
-/* NUEVO: Estilos para la cuadrícula de juegos */
-#game-selection-screen h1 { font-size: 2.5rem; margin-bottom: 3rem; }
-.game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; width: 100%; }
-.game-item { cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-.game-item img { width: 120px; height: 120px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.game-item span { font-size: 1.5rem; color: var(--color-text-dark); }
+/* --- Pantalla de Inicio --- */
+#start-screen {
+    background-color: #fff;
+}
 
-/* CAMBIO: Ajustes en la pantalla de categorías */
-#category-screen { justify-content: flex-start; padding-top: 8rem; } /* Más espacio arriba para el botón y el título */
-#category-screen h1 { font-size: 2.5rem; margin-bottom: 3rem; }
-.category-grid { display: flex; flex-direction: column; gap: 2rem; }
-.category-item { cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-.category-item img { width: 100px; height: auto; }
-.category-item span { font-size: 1.5rem; }
-
-/* NUEVO: Estilo para el botón de regreso al menú de juegos */
-#back-to-games-button {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    width: 40px;
+.logo {
+    max-width: 80%;
     height: auto;
-    cursor: pointer;
-    z-index: 20;
+    margin-bottom: 2rem;
 }
 
+.start-text {
+    font-size: 2rem;
+    color: var(--color-text-dark);
+    animation: blink 1.5s linear infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* --- Pantalla de Selección de Juego --- */
+#game-selection-screen {
+    background-color: #fff;
+}
+#game-selection-screen h1 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+.game-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.game-item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-out;
+}
+.game-item:hover img {
+    transform: scale(1.05);
+}
+.game-item span {
+    font-size: 1.5rem;
+    color: var(--color-text-dark);
+}
+
+/* --- Pantalla de Categorías (Juego de Preguntas) --- */
+#category-screen {
+    background-color: #fff;
+    justify-content: flex-start;
+    padding-top: 8rem;
+}
+#category-screen h1 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+.category-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.category-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.category-item img {
+    width: 100px;
+    height: auto;
+}
+.category-item span {
+    font-size: 1.5rem;
+}
 .category-item[data-category="elespejonegro"] span { color: var(--color-espejo); }
 .category-item[data-category="equipoaprueba"] span { color: var(--color-equipo); }
 .category-item[data-category="fuego"] span { color: var(--color-fuego); }
@@ -71,10 +160,103 @@ html, body {
 #question-screen.equipoaprueba { background-color: var(--color-equipo); }
 #question-screen.fuego { background-color: var(--color-fuego); }
 .question-content {
-    height: 100%; width: 100%;
-    display: flex; flex-direction: column;
-    justify-content: space-around; align-items: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 #question-icon { width: 80px; }
 #question-text { font-size: 2rem; color: var(--color-text-light); flex-grow: 1; display: flex; align-items: center; padding: 1rem; }
-#back-button { cursor: pointer; width: 50px; margin-bottom: 2rem; }
+
+/* --- Estilos para Botones de Regreso (Técnica de Máscara) --- */
+.back-button-ui {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    mask-image: url('IconoBack.png');
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('IconoBack.png');
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+}
+/* Posición y color para botones en pantallas de fondo blanco */
+#back-to-games-button, #back-to-games-from-timer-config {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 20;
+    background-color: var(--color-espejo); /* Color oscuro */
+}
+/* Posición y color para botón en pantalla de pregunta (fondo de color) */
+#back-button {
+    background-color: var(--color-text-light); /* Color blanco */
+    margin-bottom: 2rem;
+}
+
+/* --- Estilos para Configuración del Temporizador --- */
+#timer-config-screen {
+    background-color: #fff;
+    justify-content: flex-start;
+    padding-top: 8rem;
+}
+.config-form { display: flex; flex-direction: column; gap: 3rem; width: 100%; max-width: 300px; }
+.config-option { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.config-option label { font-size: 1.8rem; }
+.stepper { display: flex; align-items: center; }
+.stepper button { font-size: 2rem; width: 50px; height: 50px; border: 2px solid var(--color-text-dark); background: none; border-radius: 50%; }
+.stepper input { font-size: 2.5rem; width: 80px; text-align: center; border: none; font-family: var(--font-main); }
+.cta-button { font-family: var(--font-main); font-size: 2rem; padding: 1rem 2rem; border: none; background-color: var(--color-equipo); color: white; border-radius: 15px; margin-top: 2rem; cursor: pointer; }
+
+/* --- Estilos para la Pantalla del Temporizador --- */
+#timer-screen { padding: 0; background-color: #111; }
+#timer-container { width: 100%; height: 100%; display: flex; }
+.player-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: white;
+}
+.player-area .time-display {
+    font-size: 6rem;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', sans-serif; /* Tipografía tipo reloj */
+}
+.player-area .player-label { font-size: 1.5rem; opacity: 0.7; }
+.player-area.p-1 { background-color: #e74c3c; } /* Rojo */
+.player-area.p-2 { background-color: #3498db; } /* Azul */
+.player-area.p-3 { background-color: #f1c40f; } /* Amarillo */
+.player-area.p-4 { background-color: #2ecc71; } /* Verde */
+.player-area:not(.active) { filter: brightness(0.5); transform: scale(0.98); }
+.player-area.loser { background-color: #444 !important; filter: brightness(0.3); color: #888; }
+/* Layouts */
+#timer-container[data-players="1"] { flex-direction: column; }
+#timer-container[data-players="2"] { flex-direction: column; }
+#timer-container[data-players="3"] { flex-direction: column; }
+#timer-container[data-players="3"] .player-area.p-1 { height: 50%; }
+#timer-container[data-players="3"] #bottom-row { display: flex; height: 50%; width: 100%; }
+#timer-container[data-players="4"] { flex-wrap: wrap; }
+#timer-container[data-players="4"] .player-area { width: 50%; height: 50%; }
+#timer-container[data-players="2"] .player-area.p-1 { transform: rotate(180deg); }
+#timer-container[data-players="2"] .player-area.p-1.active { transform: rotate(180deg) scale(1); }
+/* Botón de control */
+.control-button {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background-color: white; color: black;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 2rem;
+    cursor: pointer; z-index: 100;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
