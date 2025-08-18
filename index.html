@@ -19,14 +19,29 @@
 </head>
 <body>
     <div id="app-container">
-        <!-- Pantalla de Inicio -->
+        <!-- 1. Pantalla de Inicio -->
         <section id="start-screen" class="screen active">
             <img src="LogoPareja.png" alt="Logo del Juego" class="logo">
             <p class="start-text">Empezar</p>
         </section>
 
-        <!-- Pantalla de Selección de Categoría -->
+        <!-- 2. NUEVA PANTALLA: Selección de Juego -->
+        <section id="game-selection-screen" class="screen">
+            <h1>Selecciona un juego</h1>
+            <div class="game-grid">
+                <div class="game-item" data-game="pareja">
+                    <img src="IconoJuegoPreguntas.png" alt="Preguntas de Pareja">
+                    <span>Preguntas de Pareja</span>
+                </div>
+                <!-- Aquí puedes añadir más juegos en el futuro -->
+            </div>
+        </section>
+
+        <!-- 3. Pantalla "Lobby" del Juego (Selección de Categoría) -->
         <section id="category-screen" class="screen">
+            <!-- NUEVO: Flecha para volver al menú de juegos -->
+            <img id="back-to-games-button" src="IconoBack.png" alt="Volver a Juegos">
+            
             <h1>Escoge una categoría</h1>
             <div class="category-grid">
                 <div class="category-item" data-category="elespejonegro">
@@ -37,7 +52,6 @@
                     <img src="IconoEquipo.png" alt="Equipo a Prueba">
                     <span>Equipo a Prueba</span>
                 </div>
-                <!-- CAMBIOS AQUÍ -->
                 <div class="category-item" data-category="fuego">
                     <img src="IconoFuego.png" alt="Fuego">
                     <span>Fuego</span>
@@ -45,12 +59,12 @@
             </div>
         </section>
 
-        <!-- Pantalla de Pregunta -->
+        <!-- 4. Pantalla de Juego (Tarjeta de Pregunta) -->
         <section id="question-screen" class="screen">
             <div class="question-content">
                 <img id="question-icon" src="" alt="Icono de Categoría">
                 <p id="question-text"></p>
-                <img id="back-button" src="IconoBack.png" alt="Regresar">
+                <img id="back-button" src="IconoBack.png" alt="Regresar a Categorías">
             </div>
         </section>
     </div>
