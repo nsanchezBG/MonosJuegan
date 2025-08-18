@@ -5,27 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Monos Juegan</title>
     
+    <!-- Links para Favicon e Icono de Escritorio -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" href="favicon.ico">
     <link rel="manifest" href="manifest.json">
     
+    <!-- Tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
     
+    <!-- Librería de Iconos para Play/Pausa del Temporizador -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    
+    <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app-container">
+        
         <!-- 1. Pantalla de Inicio -->
         <section id="start-screen" class="screen active">
             <img src="LogoPareja.png" alt="Logo del Juego" class="logo">
             <p class="start-text">Empezar</p>
         </section>
 
-        <!-- 2. NUEVA PANTALLA: Selección de Juego -->
+        <!-- 2. Pantalla de Selección de Juego -->
         <section id="game-selection-screen" class="screen">
             <h1>Selecciona un juego</h1>
             <div class="game-grid">
@@ -33,15 +40,16 @@
                     <img src="IconoJuegoPreguntas.png" alt="Preguntas de Pareja">
                     <span>Preguntas de Pareja</span>
                 </div>
-                <!-- Aquí puedes añadir más juegos en el futuro -->
+                <div class="game-item" data-game="timer">
+                    <img src="IconoTimer.png" alt="Temporizador">
+                    <span>Temporizador</span>
+                </div>
             </div>
         </section>
 
-        <!-- 3. Pantalla "Lobby" del Juego (Selección de Categoría) -->
+        <!-- 3A. Lobby del Juego de Preguntas (Selección de Categoría) -->
         <section id="category-screen" class="screen">
-            <!-- NUEVO: Flecha para volver al menú de juegos -->
-            <img id="back-to-games-button" src="IconoBack.png" alt="Volver a Juegos">
-            
+            <div id="back-to-games-button" class="back-button-ui"></div>
             <h1>Escoge una categoría</h1>
             <div class="category-grid">
                 <div class="category-item" data-category="elespejonegro">
@@ -59,15 +67,53 @@
             </div>
         </section>
 
-        <!-- 4. Pantalla de Juego (Tarjeta de Pregunta) -->
+        <!-- 3B. Pantalla de Configuración del Temporizador -->
+        <section id="timer-config-screen" class="screen">
+            <div id="back-to-games-from-timer-config" class="back-button-ui"></div>
+            <h1>Configurar Partida</h1>
+            <div class="config-form">
+                <div class="config-option">
+                    <label for="player-count">Jugadores</label>
+                    <div class="stepper">
+                        <button id="decrement-players">-</button>
+                        <input type="text" id="player-count" value="2" readonly>
+                        <button id="increment-players">+</button>
+                    </div>
+                </div>
+                <div class="config-option">
+                    <label for="time-minutes">Minutos por jugador</label>
+                    <div class="stepper">
+                        <button id="decrement-time">-</button>
+                        <input type="text" id="time-minutes" value="5" readonly>
+                        <button id="increment-time">+</button>
+                    </div>
+                </div>
+                <button id="start-timer-button" class="cta-button">Empezar</button>
+            </div>
+        </section>
+        
+        <!-- 4A. Pantalla de Juego de Preguntas -->
         <section id="question-screen" class="screen">
             <div class="question-content">
                 <img id="question-icon" src="" alt="Icono de Categoría">
                 <p id="question-text"></p>
-                <img id="back-button" src="IconoBack.png" alt="Regresar a Categorías">
+                <div id="back-button" class="back-button-ui"></div>
             </div>
         </section>
+        
+        <!-- 4B. Pantalla de Temporizador Activo -->
+        <section id="timer-screen" class="screen">
+            <div id="timer-container">
+                <!-- JavaScript generará aquí las áreas de los jugadores -->
+            </div>
+            <div id="pause-button" class="control-button">
+                <i class="fas fa-pause"></i>
+            </div>
+        </section>
+
     </div>
+    
+    <!-- Script Principal de la App -->
     <script src="script.js"></script>
 </body>
 </html>
