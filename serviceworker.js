@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pareja-cache-v3'; // Subimos la versión
+const CACHE_NAME = 'pareja-cache-v20'; // Subimos la versión
 const urlsToCache = [
   './',
   './index.html',
@@ -23,7 +23,8 @@ const urlsToCache = [
   './IconoEquipoInner.png',
   './IconoFuegoInner.png',
   './IconoBack.png',
-  
+  './IconoTimer.png',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Shrikhand&display=swap'
 ];
 
