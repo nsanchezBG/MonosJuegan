@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Monos Juegan</title>
+    <title>Nuestro Juego</title>
     
     <!-- Links para Favicon e Icono de Escritorio -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -49,7 +49,7 @@
 
         <!-- 3A. Lobby del Juego de Preguntas (Selección de Categoría) -->
         <section id="category-screen" class="screen">
-            <div id="back-to-games-button" class="back-button-ui"></div>
+            <div class="back-button-ui back-to-games"></div>
             <h1>Escoge una categoría</h1>
             <div class="category-grid">
                 <div class="category-item" data-category="elespejonegro">
@@ -69,19 +69,22 @@
 
         <!-- 3B. Pantalla de Configuración del Temporizador -->
         <section id="timer-config-screen" class="screen">
-            <div id="back-to-games-from-timer-config" class="back-button-ui"></div>
+            <div class="back-button-ui back-to-games"></div>
             <h1>Configurar Partida</h1>
             <div class="config-form">
                 <div class="config-option">
-                    <label for="player-count">Jugadores</label>
+                    <label>Jugadores</label>
                     <div class="stepper">
                         <button id="decrement-players">-</button>
-                        <input type="text" id="player-count" value="2" readonly>
+                        <input type="text" id="player-count-display" value="2" readonly>
                         <button id="increment-players">+</button>
                     </div>
                 </div>
+                
+                <div id="player-configs-container"></div>
+
                 <div class="config-option">
-                    <label for="time-minutes">Minutos por jugador</label>
+                    <label>Minutos por jugador</label>
                     <div class="stepper">
                         <button id="decrement-time">-</button>
                         <input type="text" id="time-minutes" value="5" readonly>
@@ -97,15 +100,14 @@
             <div class="question-content">
                 <img id="question-icon" src="" alt="Icono de Categoría">
                 <p id="question-text"></p>
-                <div id="back-button" class="back-button-ui"></div>
+                <div class="back-button-ui back-to-categories"></div>
             </div>
         </section>
         
         <!-- 4B. Pantalla de Temporizador Activo -->
         <section id="timer-screen" class="screen">
-            <div id="timer-container">
-                <!-- JavaScript generará aquí las áreas de los jugadores -->
-            </div>
+            <div class="back-button-ui back-to-config"></div>
+            <div id="timer-container"></div>
             <div id="pause-button" class="control-button">
                 <i class="fas fa-pause"></i>
             </div>
@@ -113,7 +115,6 @@
 
     </div>
     
-    <!-- Script Principal de la App -->
     <script src="script.js"></script>
 </body>
 </html>
