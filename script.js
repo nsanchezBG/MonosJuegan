@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameItems = document.querySelectorAll('.game-item');
     const backToGamesButton = document.getElementById('back-to-games-button');
     const backToGamesFromTimerConfig = document.getElementById('back-to-games-from-timer-config');
+    const backToConfigFromTimer = document.getElementById('back-to-config-from-timer');
 
     // Elementos del Juego de Preguntas
     const categoryItems = document.querySelectorAll('.category-item');
@@ -21,12 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('back-button');
 
     // Elementos del Juego de Temporizador
-    const playerCountInput = document.getElementById('player-count');
+    const playerCountDisplay = document.getElementById('player-count-display');
     const timeMinutesInput = document.getElementById('time-minutes');
     const timerContainer = document.getElementById('timer-container');
     const pauseButton = document.getElementById('pause-button');
     const startTimerButton = document.getElementById('start-timer-button');
-    
+    const playerConfigsContainer = document.getElementById('player-configs-container');
+
     // --- 2. ESTADO Y VARIABLES DE LOS JUEGOS ---
 
     // Juego de Preguntas
@@ -40,19 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Juego de Temporizador
-    let playerCount = 2;
-    let timePerPlayer = 300; // en segundos (5 minutos por defecto)
-    let playerTimes = [];
-    let currentPlayerIndex = -1; // -1 = juego no iniciado
+    const colorPalette = ['#B49FDC', '#C5EBFE', '#FEFD97', '#A5F8CE', '#FEC9A7', '#F197C0'];
+    let players = []; // Array de objetos { name: string, color: string }
+    let timePerPlayer = 300;
+    let currentPlayerIndex = -1;
     let timerInterval = null;
     let isPaused = false;
 
     // --- 3. FUNCIONES PRINCIPALES ---
 
-    /**
-     * Maneja la animación de volteo de tarjeta para cambiar entre pantallas.
-     * @param {string} screenKey - La clave de la pantalla a mostrar (ej. 'category').
-     */
     function showScreen(screenKey) {
         const currentScreen = document.querySelector('.screen.active');
         const nextScreen = screens[screenKey];
@@ -98,6 +96,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 5. FUNCIONES DEL JUEGO DE TEMPORIZADOR ---
 
+    function renderPlayerConfigs() {
+        playerConfigsContainer.innerHTML = '';
+        players.forEach((player, index) => {
+            const configRow = document.createElement('div');
+            configRow.classList.add('player-config-row');
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.classList.add('player-name-input');
+            nameInput.placeholder = `Nombre Jugador ${index + 1} (Opcional)`;
+            nameInput.value = player.name;
+            nameInput.addEventListener('input', (e) => {
+                players[index].name = e.target.value;
+            });
+
+            const paletteDiv = document.createElement('div');
+            paletteDiv.classList.add('color-palette');
+            colorPalette.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.classList.add('color-swatch');
+                swatch.style.backgroundColor = color;
+                if (color === player.color) {
+                    swatch.classList.add('selected');
+                }
+                swatch.addEventListener('click', () => {
+                    players[index].color = color;
+                    renderPlayerConfigs();
+                });
+                paletteDiv.appendChild(swatch);
+            });
+            
+            configRow.appendChild(nameInput);
+            configRow.appendChild(paletteDiv);
+            playerConfigsContainer.appendChild(configRow);
+        });
+    }
+
+    function updatePlayerCount(newCount) {
+        playerCountDisplay.value = newCount;
+        while (players.length < newCount) {
+            players.push({ 
+                name: '', 
+                color: colorPalette[players.length % colorPalette.length] 
+            });
+        }
+        while (players.length > newCount) {
+            players.pop();
+        }
+        renderPlayerConfigs();
+    }
+
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -106,26 +155,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function buildTimerScreen() {
         timerContainer.innerHTML = '';
-        timerContainer.dataset.players = playerCount;
-        playerTimes = Array(playerCount).fill(timePerPlayer);
+        timerContainer.dataset.players = players.length;
+        playerTimes = Array(players.length).fill(timePerPlayer);
         isPaused = false;
-        currentPlayerIndex = -1; // Resetea el estado para un nuevo juego
+        currentPlayerIndex = -1;
         pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        backToConfigFromTimer.classList.remove('visible');
         if (timerInterval) clearInterval(timerInterval);
 
         const createPlayerArea = (i) => {
             const playerArea = document.createElement('div');
-            playerArea.classList.add('player-area', `p-${i + 1}`);
+            playerArea.classList.add('player-area');
             playerArea.dataset.index = i;
+            playerArea.style.backgroundColor = players[i].color;
             playerArea.innerHTML = `
                 <div class="time-display">${formatTime(playerTimes[i])}</div>
-                <div class="player-label">Jugador ${i + 1}</div>
+                <div class="player-label">${players[i].name || `Jugador ${i + 1}`}</div>
             `;
             playerArea.addEventListener('click', handlePlayerTap);
             return playerArea;
         };
 
-        if (playerCount === 3) {
+        if (players.length === 3) {
             timerContainer.appendChild(createPlayerArea(0));
             const bottomRow = document.createElement('div');
             bottomRow.id = 'bottom-row';
@@ -133,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bottomRow.appendChild(createPlayerArea(2));
             timerContainer.appendChild(bottomRow);
         } else {
-            for (let i = 0; i < playerCount; i++) {
+            for (let i = 0; i < players.length; i++) {
                 timerContainer.appendChild(createPlayerArea(i));
             }
         }
@@ -143,16 +194,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isPaused) return;
         const tappedIndex = parseInt(event.currentTarget.dataset.index);
 
-        if (playerTimes[tappedIndex] <= 0) return; // No hacer nada si el jugador ya perdió
+        if (playerTimes[tappedIndex] <= 0) return;
 
-        if (currentPlayerIndex === -1) { // Primer toque para empezar el juego
+        if (currentPlayerIndex === -1) {
             startTimerFor(tappedIndex);
-        } else if (tappedIndex === currentPlayerIndex) { // Toque del jugador activo para pasar el turno
-            let nextPlayerIndex = (currentPlayerIndex + 1) % playerCount;
-            // Saltar jugadores que ya perdieron
-            while(playerTimes[nextPlayerIndex] <= 0) {
-                nextPlayerIndex = (nextPlayerIndex + 1) % playerCount;
-                if (nextPlayerIndex === currentPlayerIndex) { // Todos los demás perdieron
+        } else if (tappedIndex === currentPlayerIndex) {
+            let nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            while (playerTimes[nextPlayerIndex] <= 0) {
+                nextPlayerIndex = (nextPlayerIndex + 1) % players.length;
+                if (nextPlayerIndex === currentPlayerIndex) {
                     stopCurrentTimer();
                     return;
                 }
@@ -167,15 +217,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.querySelectorAll('.player-area').forEach(el => el.classList.remove('active'));
         const playerEl = timerContainer.querySelector(`[data-index="${index}"]`);
-        if(playerEl) playerEl.classList.add('active');
+        if (playerEl) playerEl.classList.add('active');
 
         timerInterval = setInterval(() => {
             playerTimes[index]--;
-            if(playerEl) playerEl.querySelector('.time-display').textContent = formatTime(playerTimes[index]);
+            if (playerEl) playerEl.querySelector('.time-display').textContent = formatTime(playerTimes[index]);
             
             if (playerTimes[index] <= 0) {
                 stopCurrentTimer();
-                if(playerEl) playerEl.classList.add('loser');
+                if (playerEl) playerEl.classList.add('loser');
             }
         }, 1000);
     }
@@ -187,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 6. INICIALIZACIÓN Y EVENT LISTENERS ---
 
     function init() {
-        // Cargar las preguntas para el juego de pareja
         fetch('questions_pareja.json').then(response => response.json())
             .then(data => {
                 allQuestions = data;
@@ -196,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Preguntas de pareja cargadas.");
             }).catch(error => console.error('Error al cargar las preguntas:', error));
         
-        // Preparar las pantallas para la animación de volteo
         Object.values(screens).forEach(screen => {
             if (!screen.classList.contains('active')) {
                 screen.classList.add('flipped');
@@ -206,9 +254,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- NAVEGACIÓN GLOBAL ---
         screens.start.addEventListener('click', () => showScreen('gameSelection'));
         backToGamesButton.addEventListener('click', () => showScreen('gameSelection'));
-        backToGamesFromTimerConfig.addEventListener('click', () => {
+        backToGamesFromTimerConfig.addEventListener('click', () => showScreen('gameSelection'));
+        backToConfigFromTimer.addEventListener('click', () => {
             stopCurrentTimer();
-            showScreen('gameSelection');
+            showScreen('timerConfig');
         });
         
         gameItems.forEach(item => {
@@ -233,27 +282,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // --- EVENT LISTENERS DEL JUEGO DE TEMPORIZADOR ---
-        document.getElementById('increment-players').addEventListener('click', () => { if (playerCount < 4) playerCount++; playerCountInput.value = playerCount; });
-        document.getElementById('decrement-players').addEventListener('click', () => { if (playerCount > 1) playerCount--; playerCountInput.value = playerCount; });
+        document.getElementById('increment-players').addEventListener('click', () => { if (players.length < 4) updatePlayerCount(players.length + 1); });
+        document.getElementById('decrement-players').addEventListener('click', () => { if (players.length > 1) updatePlayerCount(players.length - 1); });
         document.getElementById('increment-time').addEventListener('click', () => { timeMinutesInput.value = parseInt(timeMinutesInput.value) + 1; });
         document.getElementById('decrement-time').addEventListener('click', () => { if (parseInt(timeMinutesInput.value) > 1) timeMinutesInput.value = parseInt(timeMinutesInput.value) - 1; });
         startTimerButton.addEventListener('click', () => {
-            playerCount = parseInt(playerCountInput.value);
             timePerPlayer = parseInt(timeMinutesInput.value) * 60;
             buildTimerScreen();
             showScreen('timer');
         });
         pauseButton.addEventListener('click', () => {
-            if (currentPlayerIndex === -1) return; // No hacer nada si el juego no ha empezado
+            if (currentPlayerIndex === -1) return;
             isPaused = !isPaused;
             if (isPaused) {
                 stopCurrentTimer();
                 pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                backToConfigFromTimer.classList.add('visible');
             } else {
                 startTimerFor(currentPlayerIndex);
                 pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                backToConfigFromTimer.classList.remove('visible');
             }
         });
+
+        updatePlayerCount(2); // Inicializar la config del timer con 2 jugadores por defecto
 
         // --- REGISTRO DEL SERVICE WORKER ---
         if ('serviceWorker' in navigator) {
@@ -263,6 +315,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Iniciar la aplicación
     init();
 });
