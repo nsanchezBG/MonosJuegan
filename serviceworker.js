@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pareja-cache-v21'; // Subimos la versión
+const CACHE_NAME = 'pareja-cache-v22'; // Subimos la versión
 const urlsToCache = [
   './',
   './index.html',
