@@ -10,7 +10,11 @@
     /* Colores base de la UI */
     --color-text-dark: #333;
     --color-text-light: #fff;
+    
+    --c1: #B49FDC; --c2: #C5EBFE; --c3: #FEFD97;
+    --c4: #A5F8CE; --c5: #FEC9A7; --c6: #F197C0;
 }
+
 
 /* --- RESeteo Global y Base --- */
 * {
@@ -198,19 +202,62 @@ html, body {
     margin-bottom: 2rem;
 }
 
-/* --- Estilos para Configuración del Temporizador --- */
+/* --- Estilos para Configuración del Temporizador (Actualizados) --- */
 #timer-config-screen {
-    background-color: #fff;
     justify-content: flex-start;
     padding-top: 8rem;
+    overflow-y: auto; /* Permite scroll si hay muchos jugadores */
 }
-.config-form { display: flex; flex-direction: column; gap: 3rem; width: 100%; max-width: 300px; }
-.config-option { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.config-form {
+    display: flex; flex-direction: column; gap: 1.5rem; /* Reducido el gap */
+    width: 100%; max-width: 350px;
+}
 .config-option label { font-size: 1.8rem; }
 .stepper { display: flex; align-items: center; }
 .stepper button { font-size: 2rem; width: 50px; height: 50px; border: 2px solid var(--color-text-dark); background: none; border-radius: 50%; }
 .stepper input { font-size: 2.5rem; width: 80px; text-align: center; border: none; font-family: var(--font-main); }
 .cta-button { font-family: var(--font-main); font-size: 2rem; padding: 1rem 2rem; border: none; background-color: var(--color-equipo); color: white; border-radius: 15px; margin-top: 2rem; cursor: pointer; }
+
+/* NUEVO: Estilos para la configuración de cada jugador */
+#player-configs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.player-config-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 2px solid #eee;
+    border-radius: 15px;
+}
+.player-name-input {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 1.5rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+    width: 100%;
+    padding: 0.5rem;
+}
+.color-palette {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.color-swatch {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s;
+}
+.color-swatch.selected {
+    transform: scale(1.15);
+    border-color: var(--color-text-dark);
+}
 
 /* --- Estilos para la Pantalla del Temporizador --- */
 #timer-screen { padding: 0; background-color: #111; }
@@ -231,10 +278,6 @@ html, body {
     font-family: 'Helvetica Neue', sans-serif; /* Tipografía tipo reloj */
 }
 .player-area .player-label { font-size: 1.5rem; opacity: 0.7; }
-.player-area.p-1 { background-color: #e74c3c; } /* Rojo */
-.player-area.p-2 { background-color: #3498db; } /* Azul */
-.player-area.p-3 { background-color: #f1c40f; } /* Amarillo */
-.player-area.p-4 { background-color: #2ecc71; } /* Verde */
 .player-area:not(.active) { filter: brightness(0.5); transform: scale(0.98); }
 .player-area.loser { background-color: #444 !important; filter: brightness(0.3); color: #888; }
 /* Layouts */
@@ -259,4 +302,20 @@ html, body {
     font-size: 2rem;
     cursor: pointer; z-index: 100;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* NUEVO: Botón de regreso en la pantalla del timer */
+#back-to-config-from-timer {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 110;
+    background-color: white; /* Siempre será visible sobre un fondo de color */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+#back-to-config-from-timer.visible {
+    opacity: 1;
+    pointer-events: auto;
 }
